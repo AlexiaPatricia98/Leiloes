@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -169,12 +171,14 @@ public class cadastroVIEW extends javax.swing.JFrame {
             cadastroValor.setText("");
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Digite apenas númerosno campo valor!");
+            JOptionPane.showMessageDialog(this, "Digite apenas números no campo valor!");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(cadastroVIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
     
     // Método pard CADASTRAR produtos no MyOYL
-    public void cadastrarProduto (ProdutosDTO produto, PreparedStatement prep, String sql) {
+    public void cadastrarProduto (ProdutosDTO produto, PreparedStatement prep, String sql) throws ClassNotFoundException {
         conn = new conectaDAO ().connectDB ();
         String sq1 = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
 
@@ -200,6 +204,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }
     
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
+        // Para aparecer a lista de todos os produtos na tela listagemView
         listagemVIEW listagem = new listagemVIEW(); 
         listagem.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed

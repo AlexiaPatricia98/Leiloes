@@ -23,7 +23,7 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    public void cadastrarProduto (ProdutosDTO produto){   
+    public void cadastrarProduto (ProdutosDTO produto) throws ClassNotFoundException{   
         conn = new conectaDAO().connectDB();
     
         if (conn == null){
@@ -52,7 +52,7 @@ public class ProdutosDAO {
             }
         }
     
-    public ArrayList<ProdutosDTO> listarProdutos() {
+    public ArrayList<ProdutosDTO> listarProdutos() throws ClassNotFoundException {
         ArrayList<ProdutosDTO> listagem = new ArrayList<>();
         conn = new conectaDAO().connectDB();
         String sql = "SELECT * FROM produtos";
