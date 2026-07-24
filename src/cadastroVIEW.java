@@ -1,3 +1,8 @@
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -8,6 +13,8 @@
  * @author Adm
  */
 public class cadastroVIEW extends javax.swing.JFrame {
+
+    private Connection conn;
 
     /**
      * Creates new form cadastroVIEW
@@ -140,19 +147,58 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
         String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
         
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        if (nome.isEmpty() || valor.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos!");
+            return;
+        }
         
-    }//GEN-LAST:event_btnCadastrarActionPerformed
+        try {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setNome(nome);
+            produto.setValor(Integer.parseInt(valor));
+            produto.setStatus(status);
 
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            produtosdao.cadastrarProduto(produto);
+            
+            cadastroNome.setText("");
+            cadastroValor.setText("");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Digite apenas númerosno campo valor!");
+        }
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+    
+    // Método pard CADASTRAR produtos no MyOYL
+    public void cadastrarProduto (ProdutosDTO produto, PreparedStatement prep, String sql) {
+        conn = new conectaDAO ().connectDB ();
+        String sq1 = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
+
+        try {
+            prep = conn.prepareStatement (sql) ;
+            prep.setString(1, produto.getNome());
+            prep.setInt(2, produto.getValor());
+            prep.setString(3, produto.getStatus());
+
+            prep.executeUpdate (); // Executa o comando no banco
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+            
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + erro.getMessage ());
+        } finally {
+            try {
+                if (prep != null) prep.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: "+ e.getMessage());
+            }
+        }
+    }
+    
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
         listagemVIEW listagem = new listagemVIEW(); 
         listagem.setVisible(true);
