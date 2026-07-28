@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -138,10 +139,21 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
         
+    // Validação simples para evitar erro se o campo estiver vazio
+    if (!id.trim().isEmpty()) {
         ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
+
+        // Chamada descomentada e convertendo a String do campo para int
+        produtosdao.venderProduto(Integer.parseInt(id));
+   
+        // Atualiza a tabela da tela para mostrar os dados atualizados
         listarProdutos();
+        
+        // Opcional: limpa o campo de texto do ID após vender
+        id_produto_venda.setText("");
+    } else {
+        JOptionPane.showMessageDialog(null, "Informe o ID do produto para vender.");
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed

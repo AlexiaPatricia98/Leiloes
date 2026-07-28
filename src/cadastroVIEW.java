@@ -188,7 +188,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
             prep.setInt(2, produto.getValor());
             prep.setString(3, produto.getStatus());
 
-            prep.executeUpdate (); // Executa o comando no banco
+            prep.executeUpdate (); // Executa o comando no banco e informa que o produto foi cadastrado com sucesso.
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
             
         } catch (SQLException erro) {

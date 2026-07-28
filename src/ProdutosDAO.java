@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ProdutosDAO {
@@ -52,6 +54,32 @@ public class ProdutosDAO {
             }
         }
     
+    public void venderProduto (int id) {
+        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+
+        try {
+                conn = new conectaDAO().connectDB();
+                prep = conn.prepareStatement(sql);
+
+                prep.setInt(1, id);
+
+                prep.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ProdutosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (prep != null) prep.close();
+                    if (conn != null) conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }  
+    }
+    
+    // Método ListarProdutos, para a aparecer na listagem 
     public ArrayList<ProdutosDTO> listarProdutos() throws ClassNotFoundException {
         ArrayList<ProdutosDTO> listagem = new ArrayList<>();
         conn = new conectaDAO().connectDB();
