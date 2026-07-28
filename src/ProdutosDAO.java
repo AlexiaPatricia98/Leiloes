@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
 
 
 public class ProdutosDAO {
@@ -77,6 +78,45 @@ public class ProdutosDAO {
                     e.printStackTrace();
                 }
             }  
+    }
+    
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() throws ClassNotFoundException {
+        // SQL para buscar apenas produtos com o status "Vendido"
+        String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+        
+        try {
+            // Obtém a conexão com o banco de dados
+            conn = new conectaDAO().connectDB();
+            prep = this.conn.prepareStatement(sql);
+            resultset = prep.executeQuery();
+            
+            // Percorre os resultados retornados do banco
+        while (resultset.next()) {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(resultset.getInt("id"));
+            produto.setNome(resultset.getString("nome"));
+            produto.setValor(resultset.getInt("valor"));
+            produto.setStatus(resultset.getString("status"));
+            
+             // Adiciona o produto filtrado à lista de retorno
+            listagem.add(produto);
+        }
+            
+            // Percorre os resultados retornados do banco
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog (null, "Erro ao listar vendas: " + e.getMessage());
+        } finally {
+
+        try { 
+            if (resultset != null) resultset.close();
+            if (prep != null) prep.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+               e.printStackTrace();
+        }
+        }
+    return listagem;
     }
     
     // Método ListarProdutos, para a aparecer na listagem 
