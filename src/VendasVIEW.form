@@ -53,7 +53,7 @@
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jButtonPesqsar" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonVoltar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="247" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -68,7 +68,7 @@
               <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="232" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-              <Component id="jButtonPesqsar" min="-2" max="-2" attributes="0"/>
+              <Component id="jButtonVoltar" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="40" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -83,7 +83,7 @@
         <Property name="text" type="java.lang.String" value="VENDAS"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonPesqsar">
+    <Component class="javax.swing.JButton" name="jButtonVoltar">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Lucida Fax" size="14" style="0"/>
@@ -91,7 +91,7 @@
         <Property name="text" type="java.lang.String" value="Voltar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPesqsarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVoltarActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">

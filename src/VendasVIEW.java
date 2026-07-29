@@ -1,8 +1,3 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,15 +10,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VendasVIEW extends javax.swing.JFrame {
 
-    private Connection conn;
-    PreparedStatement prep;
-    ResultSet resultset;
-
+  
     /**
      * Creates new form Vendas
      */
     public VendasVIEW() {
         initComponents();
+        listarVendas();
     }
 
     /**
@@ -38,7 +31,7 @@ public class VendasVIEW extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabelVendas = new javax.swing.JLabel();
-        jButtonPesqsar = new javax.swing.JButton();
+        jButtonVoltar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableVenda = new javax.swing.JTable();
 
@@ -51,11 +44,11 @@ public class VendasVIEW extends javax.swing.JFrame {
         jLabelVendas.setFont(new java.awt.Font("Lucida Fax", 0, 20)); // NOI18N
         jLabelVendas.setText("VENDAS");
 
-        jButtonPesqsar.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
-        jButtonPesqsar.setText("Voltar");
-        jButtonPesqsar.addActionListener(new java.awt.event.ActionListener() {
+        jButtonVoltar.setFont(new java.awt.Font("Lucida Fax", 0, 14)); // NOI18N
+        jButtonVoltar.setText("Voltar");
+        jButtonVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPesqsarActionPerformed(evt);
+                jButtonVoltarActionPerformed(evt);
             }
         });
 
@@ -88,7 +81,7 @@ public class VendasVIEW extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(41, 41, 41))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonPesqsar)
+                        .addComponent(jButtonVoltar)
                         .addGap(247, 247, 247))))
         );
         layout.setVerticalGroup(
@@ -99,17 +92,39 @@ public class VendasVIEW extends javax.swing.JFrame {
                 .addGap(58, 58, 58)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(jButtonPesqsar)
+                .addComponent(jButtonVoltar)
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonPesqsarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesqsarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonPesqsarActionPerformed
-
+    private void jButtonVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVoltarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonVoltarActionPerformed
+    
+    private void listarVendas() { // metodo listar vendas
+        try {
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTableVenda.getModel();
+            model.setNumRows(0);
+            
+            java.util.ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendidos();
+            
+            for (int i = 0; i < listagem.size(); i++) {
+                model.addRow(new Object[]{
+                    listagem.get(i).getId(),
+                    listagem.get(i).getNome(),
+                    listagem.get(i).getValor(),
+                    listagem.get(i).getStatus()
+                });
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Erro ao listar vendas: " + e.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -146,37 +161,11 @@ public class VendasVIEW extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonPesqsar;
+    private javax.swing.JButton jButtonVoltar;
     private javax.swing.JLabel jLabelVendas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableVenda;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-
-    
-    // Método carregarVendasVendidas, para a aparecer na VendasVIEW 
-    public void carregarVendasVendidas() throws ClassNotFoundException {
-    DefaultTableModel modelo = (DefaultTableModel) jTableVenda.getModel();
-    modelo.setRowCount(0);
-
-    String sql = "SELECT id, nome, valor, status FROM vendas WHERE status = 'Vendido'";
-    conn = (Connection) new conectaDAO().connectDB();
-
-    try (PreparedStatement prep = conn.prepareStatement(sql);
-            ResultSet resultset = prep.executeQuery()) {
-
-        while (resultset.next()) {
-            modelo.addRow(new Object[] {
-                resultset.getInt("id"),
-                resultset.getString("nome"),
-                resultset.getInt("valor"),
-                resultset.getString("status")
-            });
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    }
-
 }
